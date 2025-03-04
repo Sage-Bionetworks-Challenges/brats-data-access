@@ -4,7 +4,7 @@ Per the rules of the BraTS Challenges (2023 and beyond), participants must:
     1. register for the challenges; AND
     2. complete a "mailing list" Google form
 
-before they can access the challenge data. The script performs these checks
+before they can access the challenge data. This script performs these checks
 and, if all criteria are met, sends an invitation to the BraTS Data Access
 Team, granting access to the data.
 """
@@ -91,15 +91,13 @@ def is_team_member(team_id: int, user_id: str) -> bool:
         return False
 
 
-def is_pending_invite(team_id: int, user_id: str) -> bool:
+def get_pending_invites(team_id: int) -> list:
     """
-    Checks if there is an open invitation for the given Synapse user to join the
-    given Synapse team.
+    Returns a list of user IDs with pending invites to the given Synapse team.
     """
-    current_invites = [
+    return [
         invite.get("inviteeId") for invite in syn.get_team_open_invitations(team_id)
     ]
-    return user_id in current_invites
 
 
 def send_email_invite(team_id: int, user_id: str):
@@ -133,7 +131,7 @@ def send_invalid_email(username: str, user_id: str, err_level: str):
     time.sleep(6)  # Add buffer time to prevent too-frequent API calls.
 
 
-def validate_response(response: pd.Series) -> str:
+def validate_response(response: pd.Series, invites: list) -> str:
     """Validate the current form response.
 
     Checks include:
@@ -158,8 +156,8 @@ def validate_response(response: pd.Series) -> str:
         # If not, is user registered for latest challenge?
         elif is_team_member(CHALLENGE_TEAM_ID, syn_userid):
 
-            # Third check: invite already sent? # If not, send invite.
-            if is_pending_invite(DATA_ACCESS_TEAM_ID, syn_userid):
+            # Third check: invite already sent? If not, send invite.
+            if syn_userid in invites:
                 result = "Pending invite"
                 send_invalid_email(submitted_username, syn_userid, result)
             else:
@@ -197,9 +195,14 @@ def main():
         how="left",
         indicator=True,
     ).query('_merge == "left_only"')
-    for _, row in new_responses.iterrows():
-        log_msg = validate_response(row)
-        add_result_to_log(logs_wks, row["Timestamp"], row["Synapse Username"], log_msg)
+    
+    if new_responses:
+        current_invites = get_pending_invites(DATA_ACCESS_TEAM_ID)
+        for _, row in new_responses.iterrows():
+            log_msg = validate_response(row, current_invites)
+            add_result_to_log(logs_wks, row["Timestamp"], row["Synapse Username"], log_msg)
+    else:
+        print("No new responses")
 
 
 if __name__ == "__main__":

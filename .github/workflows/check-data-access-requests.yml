@@ -1,0 +1,33 @@
+name: Check BraTS Data Access requests
+on:
+  schedule:
+    - cron: '*/15 * * * *'  # Run every 15 minutes
+  workflow_dispatch:
+
+jobs:
+  check-responses:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4.2.2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Create Google Client credentials file
+        uses: jsdaniell/create-json@v1.2.3
+        with:
+          name: 'service_account.json'
+          json: ${{ secrets.GOOGLE_CLIENT_JSON }}
+
+      - name: Install dependencies
+        run: | 
+          python3 -m pip install --upgrade pip
+          pip install gspread synapseclient pandas
+  
+      - name: Validate responses
+        run: |
+          python3 validate_form_responses.py
+        env:
+          SYNAPSE_AUTH_TOKEN: ${{ secrets.SYNAPSE_AUTH_TOKEN }}

@@ -45,16 +45,21 @@ EMAIL_TEMPLATES = {
 }
 
 
-def add_result_to_log(wks, original_timestamp: str, username: str, msg: str):
+def add_result_to_log(wks, original_timestamp: str, username: str, result: str):
     """Logs the validation result into the given Google worksheet.
 
     The log should also include the original timestamp of the form response
     for comparison against new responses.
+
+    Assumption:
+        Google worksheet to add row to has 4 columns:
+            1. timestamp of logging message
+            2. timestamp of form response
+            3. username
+            4. logging message
     """
     now = datetime.now().strftime("%m/%d/%Y %H:%M:%S")
-
-    # Include original timestamp of response to prevent duplicate processing.
-    new_row = [now, original_timestamp, username, msg]
+    new_row = [now, original_timestamp, username, result]
     wks.append_row(new_row)
 
 

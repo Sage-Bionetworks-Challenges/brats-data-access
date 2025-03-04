@@ -196,13 +196,13 @@ def main():
         indicator=True,
     ).query('_merge == "left_only"')
     
-    if new_responses:
+    if new_responses.empty:
+        print("No new responses")
+    else:
         current_invites = get_pending_invites(DATA_ACCESS_TEAM_ID)
         for _, row in new_responses.iterrows():
             log_msg = validate_response(row, current_invites)
             add_result_to_log(logs_wks, row["Timestamp"], row["Synapse Username"], log_msg)
-    else:
-        print("No new responses")
 
 
 if __name__ == "__main__":

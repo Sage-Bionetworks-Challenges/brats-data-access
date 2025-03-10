@@ -108,7 +108,7 @@ def send_email_invite(team_id: int, user_id: str):
         )
         syn.invite_to_team(team=team_id, user=user_id, message=invite)
         log_msg = "Invite sent"
-        time.sleep(6)  # Add buffer time to prevent too-frequent API calls.
+        time.sleep(2)  # Add buffer time to prevent too-frequent API calls.
     except Exception as err:
         log_msg = f"Error sending invite: {err}"
     return log_msg
@@ -126,7 +126,7 @@ def send_invalid_email(username: str, user_id: str, err_level: str):
         messageBody=message,
         contentType="text/html",  # Enable HTML content
     )
-    time.sleep(6)  # Add buffer time to prevent too-frequent API calls.
+    time.sleep(2)  # Add buffer time to prevent too-frequent API calls.
 
 
 def validate_response(response: pd.Series, invites: list) -> str:

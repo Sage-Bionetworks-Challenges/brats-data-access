@@ -24,8 +24,8 @@ LOGS_SPREADSHEET = "Logs"
 
 # Synapse config
 # ---------------------------------------------------------------------
-CHALLENGE_NAME = "BraTS-Lighthouse 2025"  # TODO: update name of latest Challenge as needed.
-CHALLENGE_TEAM_ID = 3523569  # TODO: update teamID of latest Participants team as needed.
+CHALLENGE_NAME = "BraTS-Lighthouse 2025"  # TODO: update with latest Challenge name.
+CHALLENGE_TEAM_ID = 3523569  # TODO: update with latest teamID for Participant team.
 DATA_ACCESS_TEAM_ID = 3523636  # !!! Do not change.
 EMAIL_TEMPLATES = {
     "Access already granted": (
@@ -46,15 +46,15 @@ EMAIL_TEMPLATES = {
 }
 
 
-def add_result_to_log(wks, original_timestamp: str, username: str, result: str):
+def add_result_to_logs(wks, original_timestamp: str, username: str, result: str):
     """Logs the validation result into the given Google worksheet.
 
     Assumption:
         Google worksheet has four columns in the following order:
             1. timestamp of logging message
             2. timestamp of form response
-            3. username
-            4. logging message
+            3. Synapse username
+            4. log message
     """
     now = datetime.now().strftime("%m/%d/%Y %H:%M:%S")
     new_row = [now, original_timestamp, username, result]
@@ -64,7 +64,7 @@ def add_result_to_log(wks, original_timestamp: str, username: str, result: str):
 def is_valid_synapse_user(username: str) -> dict | None:
     """Checks if the given username is a real Synapse account."""
     try:
-        # If username is digits only, use another method to check its validity.
+        # If username is digits only, use another method to verify.
         if username.isdigit():
             return [
                 user
@@ -89,7 +89,7 @@ def is_team_member(team_id: int, user_id: str) -> bool:
         return False
 
 
-def get_pending_invites(team_id: int) -> list:
+def get_open_invites(team_id: int) -> list:
     """
     Returns a list of user IDs with pending invites to the given Synapse team.
     """
@@ -98,7 +98,7 @@ def get_pending_invites(team_id: int) -> list:
     ]
 
 
-def send_email_invite(team_id: int, user_id: str):
+def send_email_invite(team_id: int, user_id: str) -> str:
     """Invite the given Synapse user to join the given Synapse team."""
     try:
         invite = (
@@ -129,8 +129,8 @@ def send_invalid_email(username: str, user_id: str, err_level: str):
     time.sleep(2)  # Add buffer time to prevent too-frequent API calls.
 
 
-def validate_response(response: pd.Series, invites: list) -> str:
-    """Validate the current form response.
+def validate_response(response: pd.Series, open_invites: list) -> str:
+    """Validate the current form response and send email if invalid.
 
     Checks include:
         1. Is the given username a real Synapse account?
@@ -171,9 +171,9 @@ def validate_response(response: pd.Series, invites: list) -> str:
 
 def main():
     """Main function: check form responses and send invites as needed.
-    
+
     Assumptions:
-        - form responses worksheet contains two columns: `Timestamp` and 
+        - form responses worksheet contains two columns: `Timestamp` and
           `Synapse Username`
         - logs worksheet contains two columns: `Original Timestamp` and
           `Synapse Username`
@@ -202,14 +202,16 @@ def main():
         how="left",
         indicator=True,
     ).query('_merge == "left_only"')
-    
+
     if new_responses.empty:
         print("No new responses")
     else:
-        current_invites = get_pending_invites(DATA_ACCESS_TEAM_ID)
+        current_invites = get_open_invites(DATA_ACCESS_TEAM_ID)
         for _, row in new_responses.iterrows():
             log_msg = validate_response(row, current_invites)
-            add_result_to_log(logs_wks, row["Timestamp"], row["Synapse Username"], log_msg)
+            add_result_to_logs(
+                logs_wks, row["Timestamp"], row["Synapse Username"], log_msg
+            )
 
 
 if __name__ == "__main__":

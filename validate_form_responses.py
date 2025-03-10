@@ -149,24 +149,25 @@ def validate_response(response: pd.Series, open_invites: list) -> str:
         # Second check: has access already been granted?
         if is_team_member(DATA_ACCESS_TEAM_ID, syn_userid):
             result = "Access already granted"
-            send_invalid_email(submitted_username, syn_userid, result)
 
-        # If not, is user registered for latest challenge?
+        # Third check: did user register for the challenge?
         elif is_team_member(CHALLENGE_TEAM_ID, syn_userid):
 
-            # Third check: invite already sent? If not, send invite.
-            if syn_userid in invites:
-                result = "Pending invite"
-                send_invalid_email(submitted_username, syn_userid, result)
-            else:
-                result = send_email_invite(DATA_ACCESS_TEAM_ID, syn_userid)
+            # Final check: invite already sent? If not, send invite.
+            result = (
+                "Pending invite"
+                if syn_userid in open_invites
+                else send_email_invite(DATA_ACCESS_TEAM_ID, syn_userid)
+            )
+
         else:
             result = "Missing registration"
+
+        if result != "Invite sent":
             send_invalid_email(submitted_username, syn_userid, result)
-    else:
-        # No follow-up action can be done, since username can't be found.
-        result = "Username not found"
-    return result
+        return result
+
+    return "Username not found"
 
 
 def main():

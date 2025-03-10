@@ -5,8 +5,8 @@ Per the rules of the BraTS Challenges (2023 and beyond), participants must:
     2. complete a "mailing list" Google form
 
 before they can access the challenge data. This script performs these checks
-and, if all criteria are met, sends an invitation to the BraTS Data Access
-Team, granting access to the data.
+and, if all criteria are met, sends an invite to the BraTS Data Access Team,
+thus granting access to the data.
 """
 
 import time
@@ -19,13 +19,14 @@ import synapseclient
 # Google Form config
 # ---------------------------------------------------------------------
 GOOGLE_SHEET_TITLE = "BraTS Data Access Responses"
-GOOGLE_SHEET_SPREADSHEET = "2025 and beyond"
+RESPONSES_SPREADSHEET = "2025 and beyond"
+LOGS_SPREADSHEET = "Logs"
 
 # Synapse config
 # ---------------------------------------------------------------------
-CHALLENGE_NAME = "BraTS-Lighthouse 2025"  # Name of latest Challenge - update as needed.
-CHALLENGE_TEAM_ID = 3523569  # Team ID of latest Participants team - update as needed.
-DATA_ACCESS_TEAM_ID = 3523636  # Do not change.
+CHALLENGE_NAME = "BraTS-Lighthouse 2025"  # TODO: update name of latest Challenge as needed.
+CHALLENGE_TEAM_ID = 3523569  # TODO: update teamID of latest Participants team as needed.
+DATA_ACCESS_TEAM_ID = 3523636  # !!! Do not change.
 EMAIL_TEMPLATES = {
     "Access already granted": (
         "You have already joined the BraTS Data Access Team. To download "
@@ -48,11 +49,8 @@ EMAIL_TEMPLATES = {
 def add_result_to_log(wks, original_timestamp: str, username: str, result: str):
     """Logs the validation result into the given Google worksheet.
 
-    The log should also include the original timestamp of the form response
-    for comparison against new responses.
-
     Assumption:
-        Google worksheet to add row to has 4 columns:
+        Google worksheet has four columns in the following order:
             1. timestamp of logging message
             2. timestamp of form response
             3. username
@@ -172,16 +170,25 @@ def validate_response(response: pd.Series, invites: list) -> str:
 
 
 def main():
-    """Main function."""
+    """Main function: check form responses and send invites as needed.
+    
+    Assumptions:
+        - form responses worksheet contains two columns: `Timestamp` and 
+          `Synapse Username`
+        - logs worksheet contains two columns: `Original Timestamp` and
+          `Synapse Username`
+    """
 
-    # Get form responses, as well as the most recent logs.
+    # Get form responses and put them into a DataFrame.
     gc = gspread.service_account(filename="service_account.json")
     google_sheet = gc.open(GOOGLE_SHEET_TITLE)
     responses_df = pd.DataFrame(
-        google_sheet.worksheet(GOOGLE_SHEET_SPREADSHEET).get_all_records()
+        google_sheet.worksheet(RESPONSES_SPREADSHEET).get_all_records()
     )[["Timestamp", "Synapse Username"]]
 
-    logs_wks = google_sheet.worksheet("Logs")
+    # Because the logs spreadsheet will be updated, it must first be
+    # retrieved as a gspread.Worksheet before put into a DataFrame.
+    logs_wks = google_sheet.worksheet(LOGS_SPREADSHEET)
     logs_df = pd.DataFrame(logs_wks.get_all_records())[
         ["Original Request Timestamp", "Synapse Username"]
     ]

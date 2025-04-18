@@ -74,6 +74,11 @@ def is_valid_synapse_user(username: str) -> dict | None:
                 if user.get("userName") == username
             ][0]
         return syn.getUserProfile(username)
+    except synapseclient.core.exceptions.SynapseHTTPError as err:
+        if "UserProfile cannot be found" in str(err):
+            team_id = syn.getTeam(username).id
+            send_invalid_email(username, team_id, "Username not provided")
+        return None
     except (ValueError, IndexError):
         return None
 

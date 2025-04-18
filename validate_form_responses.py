@@ -43,6 +43,11 @@ EMAIL_TEMPLATES = {
         "are still interested in gaining access to the data, please register "
         "for the challenge listed above, then re-submit the Google Form."
     ),
+    "Username not provided": (
+        "For the 'Synapse Username' field in the Google Form, please enter "
+        "your personal Synapse username. Team names are not accepted, as only "
+        "users can join teams. Please re-submit the form with this correction."
+    ),
 }
 
 

@@ -1,7 +1,7 @@
 name: Check BraTS Data Access requests
 on:
   schedule:
-    - cron: '*/20 * * * *'  # Run every 20 minutes
+    - cron: '*/30 * * * *'  # Run every 30 minutes
   workflow_dispatch:
 
 jobs:

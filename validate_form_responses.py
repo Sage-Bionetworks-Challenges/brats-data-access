@@ -19,14 +19,14 @@ import synapseclient
 # Google Form config
 # ---------------------------------------------------------------------
 GOOGLE_SHEET_TITLE = "BraTS Data Access Responses"
-RESPONSES_SPREADSHEET = "2025 and beyond"
+RESPONSES_SPREADSHEET = "2026"
 LOGS_SPREADSHEET = "Logs"
 
 # Synapse config
 # ---------------------------------------------------------------------
-CHALLENGE_NAME = "BraTS-Lighthouse 2025"  # TODO: update with latest Challenge name.
-CHALLENGE_TEAM_ID = 3523569  # TODO: update with latest teamID for Participant team.
-DATA_ACCESS_TEAM_ID = 3523636  # !!! Do not change.
+CHALLENGE_NAME = "BraTS 2026 Challenge"  # TODO: update with latest Challenge name.
+CHALLENGE_TEAM_ID = 3584866  # TODO: update with latest teamID for Participant team.
+DATA_ACCESS_TEAM_ID = 3586605  # !!! Do not change.
 EMAIL_TEMPLATES = {
     "Access already granted": (
         "You have already joined the BraTS Data Access Team. To download "

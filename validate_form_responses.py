@@ -29,13 +29,13 @@ CHALLENGE_TEAM_ID = 3584866  # TODO: update with latest teamID for Participant t
 DATA_ACCESS_TEAM_ID = 3586605  # !!! Do not change.
 EMAIL_TEMPLATES = {
     "Access already granted": (
-        "You have already joined the BraTS Data Access Team. To download "
-        "the data, please go to the 'Files' tab of the challenge website."
+        "You have already joined the BraTS 2026 Data Access Team. You may now "
+        "access and download the data listed under 'Data Files'."
     ),
     "Pending invite": (
-        "An email invite to join the BraTS Data Access Team has already been "
-        "sent.  Please check your inbox or spam folder for an email from the "
-        "BraTS Bot account (brats-fets-bot@synapse.org)."
+        "An email invite to join the BraTS 2026 Data Access Team has already "
+        "been sent. Please check your inbox or spam folder for an email from "
+        "the BraTS Bot account (brats-fets-bot@synapse.org)."
     ),
     "Missing registration": (
         "You must first register and agree to the Terms & Conditions of the "

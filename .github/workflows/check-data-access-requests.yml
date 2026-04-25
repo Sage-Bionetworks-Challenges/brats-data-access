@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: | 
           python3 -m pip install --upgrade pip
-          pip install gspread synapseclient pandas
+          pip install gspread==6.2.1 synapseclient==4.10.0 pandas==2.3.3
   
       - name: Validate responses
         run: |

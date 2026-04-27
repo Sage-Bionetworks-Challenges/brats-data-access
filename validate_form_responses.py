@@ -31,20 +31,21 @@ DATA_ACCESS_TEAM_ID = 3586605  # !!! Do not change.
 EMAIL_TEMPLATES = {
     "Access already granted": (
         "You are already a member of the BraTS 2026 Data Access Team! You "
-        "may now access and download the files located in the 'Data Files' "
-        f"sections of the challenge: {CHALLENGE_LINK}"
+        "may now access and download the files located under each Task tab "
+        f"of the challenge: {CHALLENGE_LINK}"
     ),
     "Pending invite": (
         "An invitation to join the BraTS 2026 Data Access Team has already "
         "been sent. Please check your inbox (and spam folder) for an email "
         "from the BraTS Service Account (brats-service-bot@synapse.org) to "
-        "accept your invite. Once accepted, you can access the files located "
-        f"in the 'Data Files' sections of the challenge: {CHALLENGE_LINK}"
+        "accept your invite.<br/><br/>"
+        "Once accepted, you can access the files located in each Task tab "
+        f"of the challenge: {CHALLENGE_LINK}"
     ),
     "Missing registration": (
         "Before you can access the data, you will first need to register and "
-        "agree to the Terms & Conditions for the latest BraTS Challenge:"
-        f"<br/><br/>{CHALLENGE_LINK}<br/><br/>"
+        "agree to the Terms & Conditions for the latest BraTS Challenge: "
+        f"{CHALLENGE_LINK}<br/><br/>"
         "Once you have successfully registered for the challenge, please "
         "re-submit this data access form."
     ),

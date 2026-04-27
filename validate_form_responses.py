@@ -120,7 +120,7 @@ def send_email_invite(team_id: int, user_id: str) -> str:
     try:
         invite = (
             "Thank you for your interest in the BraTS datasets! Once you click "
-            "'Join', you can start accessing the data located in each Task tab "
+            "'Join', you can start accessing the files located in each Task tab "
             f"of the challenge: {CHALLENGE_LINK}"
         )
         syn.invite_to_team(team=team_id, user=user_id, message=invite)

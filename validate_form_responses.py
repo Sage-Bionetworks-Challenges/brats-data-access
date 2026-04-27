@@ -43,7 +43,7 @@ EMAIL_TEMPLATES = {
     "Missing registration": (
         "Before you can access the data, you will first need to register and "
         "agree to the Terms & Conditions for the latest BraTS Challenge:"
-        f"<br/><br/>{CHALLENGE_NAME}<br/><br/>"
+        f"<br/><br/>{CHALLENGE_NAME}: https://challenges.synapse.org/brats2026<br/><br/>"
         "Once you have successfully registered for the challenge, please "
         "re-submit the data access form."
     ),

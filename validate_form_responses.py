@@ -134,7 +134,7 @@ def send_invalid_email(username: str, user_id: str, err_level: str):
     subject = f"BraTS Data Access Form - {err_level}"
     message = f"Dear {username},<br/><br/>"
     message += EMAIL_TEMPLATES.get(err_level)
-    message += "<br/><br/>Sincerely,<br/>BraTS Bot"
+    message += "<br/><br/>Sincerely,<br/>BraTS Service Bot"
     syn.sendMessage(
         userIds=[user_id],
         messageSubject=subject,

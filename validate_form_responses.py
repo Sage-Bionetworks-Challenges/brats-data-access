@@ -119,9 +119,9 @@ def send_email_invite(team_id: int, user_id: str) -> str:
     """Invite the given Synapse user to join the given Synapse team."""
     try:
         invite = (
-            "Thank you for your interest in the BraTS datasets! Once you click 'Join', "
-            f"you can start downloading the files from the 'Data Files' section of the "
-            f"challenge website: {CHALLENGE_LINK}"
+            "Thank you for your interest in the BraTS datasets! Once you click "
+            "'Join', you can access the files located in each Task tab of the "
+            f"challenge: {CHALLENGE_LINK}"
         )
         syn.invite_to_team(team=team_id, user=user_id, message=invite)
         log_msg = "Invite sent"

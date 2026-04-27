@@ -25,27 +25,28 @@ LOGS_SPREADSHEET = "Logs"
 # Synapse config
 # ---------------------------------------------------------------------
 CHALLENGE_NAME = "BraTS 2026 Challenge"  # TODO: update with latest Challenge name.
+CHALLENGE_LINK = "https://challenges.synapse.org/brats2026"  # TODO: update with latest Challenge link.
 CHALLENGE_TEAM_ID = 3584866  # TODO: update with latest teamID for Participant team.
 DATA_ACCESS_TEAM_ID = 3586605  # !!! Do not change.
 EMAIL_TEMPLATES = {
     "Access already granted": (
         "You are already a member of the BraTS 2026 Data Access Team! You "
         "may now access and download the files located in the 'Data Files' "
-        "sections."
+        f"sections of the challenge: {CHALLENGE_LINK}"
     ),
     "Pending invite": (
-        "An invitation to join the BraTS 2026 Data Access Team was already "
-        "sent to you. Please check your inbox (and spam folder) for an email "
-        "from the BraTS service account (brats-fets-bot@synapse.org) to "
+        "An invitation to join the BraTS 2026 Data Access Team has already "
+        "been sent. Please check your inbox (and spam folder) for an email "
+        "from the BraTS Service Account (brats-service-bot@synapse.org) to "
         "accept your invite. Once accepted, you can access the files located "
-        "in the 'Data Files' sections."
+        f"in the 'Data Files' sections of the challenge: {CHALLENGE_LINK}"
     ),
     "Missing registration": (
         "Before you can access the data, you will first need to register and "
         "agree to the Terms & Conditions for the latest BraTS Challenge:"
-        f"<br/><br/>{CHALLENGE_NAME}: https://challenges.synapse.org/brats2026<br/><br/>"
+        f"<br/><br/>{CHALLENGE_LINK}<br/><br/>"
         "Once you have successfully registered for the challenge, please "
-        "re-submit the data access form."
+        "re-submit this data access form."
     ),
     "Username not provided": (
         "It looks like there was an issue with the 'Synapse Username' "
@@ -117,9 +118,9 @@ def send_email_invite(team_id: int, user_id: str) -> str:
     """Invite the given Synapse user to join the given Synapse team."""
     try:
         invite = (
-            "Thank you for your interest in the BraTS data! After clicking 'Join', you "
-            "can start downloading data from the 'Files' tab of the BraTS Challenge "
-            "websites."
+            "Thank you for your interest in the BraTS datasets! Once you click 'Join', "
+            f"you can start downloading the files from the 'Data Files' section of the "
+            f"challenge website: {CHALLENGE_LINK}"
         )
         syn.invite_to_team(team=team_id, user=user_id, message=invite)
         log_msg = "Invite sent"

@@ -29,24 +29,29 @@ CHALLENGE_TEAM_ID = 3584866  # TODO: update with latest teamID for Participant t
 DATA_ACCESS_TEAM_ID = 3586605  # !!! Do not change.
 EMAIL_TEMPLATES = {
     "Access already granted": (
-        "You have already joined the BraTS 2026 Data Access Team. You may now "
-        "access and download the data listed under 'Data Files'."
+        "You are already a member of the BraTS 2026 Data Access Team! You "
+        "may now access and download the files located in the 'Data Files' "
+        "sections."
     ),
     "Pending invite": (
-        "An email invite to join the BraTS 2026 Data Access Team has already "
-        "been sent. Please check your inbox or spam folder for an email from "
-        "the BraTS Bot account (brats-fets-bot@synapse.org)."
+        "An invitation to join the BraTS 2026 Data Access Team was already "
+        "sent to you. Please check your inbox (and spam folder) for an email "
+        "from the BraTS service account (brats-fets-bot@synapse.org) to "
+        "accept your invite. Once accepted, you can access the files located "
+        "in the 'Data Files' sections."
     ),
     "Missing registration": (
-        "You must first register and agree to the Terms & Conditions of the "
-        f"latest BraTS Challenge:<br/><br/>> {CHALLENGE_NAME}<br/><br/>If you "
-        "are still interested in gaining access to the data, please register "
-        "for the challenge listed above, then re-submit the Google Form."
+        "Before you can access the data, you will first need to register and "
+        "agree to the Terms & Conditions for the latest BraTS Challenge:"
+        f"<br/><br/>{CHALLENGE_NAME}<br/><br/>"
+        "Once you have successfully registered for the challenge, please "
+        "re-submit the data access form."
     ),
     "Username not provided": (
-        "For the 'Synapse Username' field in the Google Form, please enter "
-        "your personal Synapse username. Team names are not accepted, as only "
-        "users can join teams. Please re-submit the form with this correction."
+        "It looks like there was an issue with the 'Synapse Username' "
+        "provided on your form. Please ensure you enter your personal, "
+        "individual Synapse username (team names are not accepted). "
+        "Please re-submit the form using your correct username."
     ),
 }
 
